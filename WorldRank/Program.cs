@@ -1,82 +1,108 @@
 using WorldRank;
 
-IPlayerRepository playerRepository = new InMemoryPlayerRepository();
-IWalletRepository walletRepository = new InMemoryWalletRepository();
+var playerRepo = new InMemoryPlayerRepository();
+var walletRepo = new InMemoryWalletRepository();
+
+int idCounter = 1;
 
 while (true)
 {
-	Console.WriteLine("\n=== WorldRank Player Registry ===");
-	Console.WriteLine("1. Add player");
-	Console.WriteLine("2. List all players");
-	Console.WriteLine("3. Find player by name");
-	Console.WriteLine("0. Exit");
-	Console.Write("> ");
+    Console.WriteLine("\n=== WorldRank ===");
+    Console.WriteLine("1. Add Player");
+    Console.WriteLine("2. List Players");
+    Console.WriteLine("3. Find Player");
+    Console.WriteLine("4. Add Wallet");
+    Console.WriteLine("5. List Player Wallets");
+    Console.WriteLine("6. Delete Player");
+    Console.WriteLine("0. Exit");
 
-	Action? action = Console.ReadLine() switch
-	{
-		"1" => AddPlayer,
-		"2" => ListPlayers,
-		"3" => FindPlayer,
-		"0" => null,
-		_ => () => Console.WriteLine("Unknown option.")
-	};
+    Console.Write("> ");
 
-	if (action is null)
-		return; // "0" selected — exit
+    var choice = Console.ReadLine();
 
-	action();
-}
+    switch (choice)
+    {
+        case "1":
+            Console.Write("Name: ");
+            var name = Console.ReadLine();
 
-void AddPlayer()
-{
-	Console.Write("Name: ");
-	var name = Console.ReadLine();
-	if (string.IsNullOrWhiteSpace(name))
-	{
-		Console.WriteLine("Name cannot be empty.");
-		return;
-	}
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                var player = new Player(idCounter++, name);
+                playerRepo.AddPlayer(player);
+                Console.WriteLine("Player added.");
+            }
+            break;
 
-	Console.Write("Score: ");
-	var scoreInput = Console.ReadLine();
-	if (!int.TryParse(scoreInput, out var score))
-	{
-		Console.WriteLine("Score must be a whole number.");
-		return;
-	}
 
-	var player = new Player(name);
-	player.UpdateScore(score);
+        case "2":
+            foreach (var player in playerRepo.Players)
+            {
+                Console.WriteLine(player);
+            }
+            break;
 
-	players.Add(player);
-	Console.WriteLine("Player added successfully.");
-}
 
-void ListPlayers()
-{
-	if (players.Count == 0)
-	{
-		Console.WriteLine("No players registered.");
-		return;
-	}
+        case "3":
+            Console.Write("Player ID: ");
 
-	foreach (var p in players)
-		Console.WriteLine(p);
-}
+            if (int.TryParse(Console.ReadLine(), out int searchId))
+            {
+                var player = playerRepo.FindPlayer(searchId);
 
-void FindPlayer()
-{
-	Console.Write("Search by name: ");
-	var term = Console.ReadLine() ?? string.Empty;
+                Console.WriteLine(player?.ToString() ?? "Player not found.");
+            }
+            break;
 
-	var player = players
-			.FirstOrDefault(p => p.Name.Equals(term, StringComparison.OrdinalIgnoreCase));
 
-	if (player is null)
-	{
-		Console.WriteLine("No player found.");
-		return;
-	}
+        case "4":
+            Console.Write("Player ID: ");
 
-	Console.WriteLine(player);
+            if (int.TryParse(Console.ReadLine(), out int playerId))
+            {
+                Console.Write("Currency (EUR/USD/GBP): ");
+
+                if (Enum.TryParse(Console.ReadLine(), true, out Currency currency))
+                {
+                    var wallet = new Wallet(currency);
+
+                    walletRepo.Add(wallet, playerId);
+
+                    Console.WriteLine("Wallet added.");
+                }
+            }
+            break;
+
+
+        case "5":
+            Console.Write("Player ID: ");
+
+            if (int.TryParse(Console.ReadLine(), out int id))
+            {
+                foreach (var wallet in walletRepo.GetByPlayer(id))
+                {
+                    Console.WriteLine(wallet);
+                }
+            }
+            break;
+
+
+        case "6":
+            Console.Write("Player ID: ");
+
+            if (int.TryParse(Console.ReadLine(), out int deleteId))
+            {
+                playerRepo.DeletePlayer(deleteId);
+            }
+            break;
+
+
+        case "0":
+            return;
+
+
+        default:
+            Console.WriteLine("Invalid option.");
+            break;
+    }
 }

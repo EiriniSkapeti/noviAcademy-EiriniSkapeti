@@ -2,27 +2,31 @@ namespace WorldRank;
 
 public class Player : IPlayer
 {
-	public int Id { get; }
-	public string Name { get; }
-	public int Score { get; private set; }
+    public int Id { get; }
+    public string Name { get; }
+    public int Score { get; private set; }
 
-	public Player(string name)
-	{
-		if (string.IsNullOrEmpty(name))
-			throw new ArgumentException("Name cannot be null or empty.", nameof(name));
+    public Player(int id, string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Name cannot be empty.");
 
-		Id = Guid.NewGuid();
-		Name = name;
-	}
+        Id = id;
+        Name = name;
+    }
 
-	public void UpdateScore(int newScore)
-	{
-		if (newScore < 0)
-			throw new ArgumentOutOfRangeException(nameof(newScore), "Score cannot be negative.");
 
-		Score = newScore;
-	}
+    public void UpdateScore(int score)
+    {
+        if (score < 0)
+            throw new ArgumentOutOfRangeException(nameof(score));
 
-	public override string ToString() =>
-			$"[{Id}] {Name} - Score: {Score}";
+        Score = score;
+    }
+
+
+    public override string ToString()
+    {
+        return $"{Id}: {Name} - Score {Score}";
+    }
 }
