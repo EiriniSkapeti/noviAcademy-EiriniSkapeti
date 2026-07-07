@@ -1,6 +1,7 @@
 using WorldRank;
 
-var players = new List<Player>();
+IPlayerRepository playerRepository = new InMemoryPlayerRepository();
+IWalletRepository walletRepository = new InMemoryWalletRepository();
 
 while (true)
 {

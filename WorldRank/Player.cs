@@ -1,8 +1,8 @@
 namespace WorldRank;
 
-public class Player
+public class Player : IPlayer
 {
-	public Guid Id { get; }
+	public int Id { get; }
 	public string Name { get; }
 	public int Score { get; private set; }
 
