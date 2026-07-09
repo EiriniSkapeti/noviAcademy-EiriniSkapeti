@@ -1,4 +1,4 @@
-namespace WorldRank.Domain
+namespace WorldRank.Domain.Entities
 {
 	public interface IPlayer
 	{

@@ -3,7 +3,10 @@ using WorldRank.Console;
 using WorldRank.Domain.Enums;
 using WorldRank.Domain.Exceptions;
 using WorldRank.Domain;
+using WorldRank.Infrastructure;
+using WorldRank.Infrastructure.Repositories;
 using WorldRank.Application;
+using WorldRank.Application.Repositories;
 
 var logger = LogManager.GetCurrentClassLogger();
 

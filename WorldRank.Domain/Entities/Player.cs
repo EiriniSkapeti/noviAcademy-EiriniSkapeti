@@ -1,5 +1,5 @@
 using WorldRank.Domain.Enums;
-
+using WorldRank.Domain.Entities;
 namespace WorldRank.Domain;
 
 public class Player : IPlayer
