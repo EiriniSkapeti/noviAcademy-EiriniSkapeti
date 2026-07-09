@@ -1,4 +1,5 @@
 ﻿using WorldRank.Console.Enums;
+using WorldRank.Console.Exceptions;
 
 namespace WorldRank.Console
 {
@@ -19,12 +20,34 @@ namespace WorldRank.Console
 		{
 			if (balance < 0)
 			{
-				return;
-			}
+                throw new WalletException("Balance cannot be negative.");
+            }
 			Balance = balance;
 		}
 
-		public override string ToString()
+        public void Deposit(decimal amount)
+        {
+            if (amount <= 0)
+                throw new WalletException("Deposit amount must be positive.");
+            if (IsBlocked)
+                throw new WalletException("Wallet is blocked.");
+
+            Balance += amount;
+        }
+
+        public void Withdraw(decimal amount)
+        {
+            if (amount <= 0)
+                throw new WalletException("Withdrawal amount must be positive.");
+            if (IsBlocked)
+                throw new WalletException("Wallet is blocked.");
+            if (amount > Balance)
+                throw new InsufficientFundsException(amount, Balance);  // the negative-balance case
+
+            Balance -= amount;
+        }
+
+        public override string ToString()
 		{
 			return "Balance -> " + Balance + " Currency ->" + Currency + " IsBlocked -> " + IsBlocked;
 		}

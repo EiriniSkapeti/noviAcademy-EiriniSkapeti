@@ -1,5 +1,16 @@
 ﻿using WorldRank.Console;
 using WorldRank.Console.Enums;
+using WorldRank.Console.Exceptions;
+using NLog;
+
+var logger = LogManager.GetCurrentClassLogger();
+
+logger.Info("App started");
+logger.Warn("This is a warning");
+logger.Error("Something broke");
+
+LogManager.Shutdown(); // flushes file writes before exit
+
 
 var players = new List<Player>();
 var nextId = 1;
@@ -129,34 +140,37 @@ void SearchPlayer()
 
 void AddWalletToPlayer()
 {
-	Console.Write("Give player id: ");
-	var id = Console.ReadLine();
-	Console.Write("Give Currency: 0 - NONE |  1 - EUR | 2 - USD\n");
-	var currency = Console.ReadLine();
+    Console.Write("Give player id: ");
+    if (!int.TryParse(Console.ReadLine(), out var playerId))
+    {
+        Console.WriteLine("Id not a number");
+        return;
+    }
 
-	Currency cur = Currency.NONE;
+    Console.Write("Give Currency: 0 - NONE | 1 - EUR | 2 - USD\n");
+    var cur = Console.ReadLine() switch
+    {
+        "1" => Currency.EUR,
+        "2" => Currency.USD,
+        _ => Currency.NONE
+    };
 
-	switch (currency)
-	{
-		case "0":
-		default:
-			cur = Currency.NONE;
-			break;
-
-		case "1":
-			cur =
-			Currency.EUR;
-			break;
-		case "2":
-			cur =
-			Currency.USD;
-			break;
-	}
-
-	int.TryParse(id, out var playerId);
-	{
-		walletRepository.Add(new Wallet(10, cur, false), playerId);
-	}
+    try
+    {
+        walletRepository.Add(new Wallet(10, cur, false), playerId);
+        Console.WriteLine("Wallet added.");
+        logger.Info("Added {Currency} wallet to player {PlayerId}", cur, playerId);
+    }
+    catch (InsufficientFundsException ex)
+    {
+        logger.Warn(ex, "Insufficient funds for player {PlayerId}", playerId);
+        Console.WriteLine(ex.Message);
+    }
+    catch (WalletException ex)
+    {
+        logger.Error(ex, "Wallet operation failed for player {PlayerId}", playerId);
+        Console.WriteLine(ex.Message);
+    }
 }
 
 void GetWalletOfPlayer()
@@ -178,5 +192,7 @@ void GetWalletOfPlayer()
 		Console.Write("Id not a number");
 	}
 }
+
+
 
 #endregion Wallet Methods
