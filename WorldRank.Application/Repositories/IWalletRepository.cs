@@ -1,4 +1,4 @@
-using WorldRank.Console;
+using WorldRank.Domain.Entities;
 using WorldRank.Domain.Enums;
 
 namespace WorldRank.Application.Repositories

@@ -1,5 +1,6 @@
 using NLog;
 using WorldRank.Application.Repositories;
+using WorldRank.Domain.Entities;
 using WorldRank.Domain.Enums;
 using WorldRank.Domain.Exceptions;
 

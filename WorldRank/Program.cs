@@ -1,12 +1,15 @@
 using NLog;
-using WorldRank.Console;
-using WorldRank.Domain.Enums;
-using WorldRank.Domain.Exceptions;
-using WorldRank.Domain;
-using WorldRank.Infrastructure;
-using WorldRank.Infrastructure.Repositories;
 using WorldRank.Application;
 using WorldRank.Application.Repositories;
+using WorldRank.Application.Strategies;
+using WorldRank.Application.Stretegies;
+using WorldRank.Console;
+using WorldRank.Domain;
+using WorldRank.Domain.Entities;
+using WorldRank.Domain.Enums;
+using WorldRank.Domain.Exceptions;
+using WorldRank.Infrastructure;
+using WorldRank.Infrastructure.Repositories;
 
 var logger = LogManager.GetCurrentClassLogger();
 
@@ -14,6 +17,7 @@ var logger = LogManager.GetCurrentClassLogger();
 IWalletRepository walletRepository = new InMemoryWalletRepository();
 IPlayerRepository playerRepository = new InMemoryPlayerRepository();
 
+IFundsStrategy strategy = new AddFundsStrategy();
 logger.Info("Application started.");
 
 while (true)
