@@ -1,0 +1,13 @@
+﻿using WorldRank.Domain.Entities;
+
+namespace WorldRank.Application
+{
+    public interface IPlayerRepository
+    {
+        Task AddAsync(Player player, CancellationToken cancellationToken = default);
+        Task<Player?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Player?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<Player>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    }
+}

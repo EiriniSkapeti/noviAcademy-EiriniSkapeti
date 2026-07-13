@@ -5,8 +5,7 @@ namespace WorldRank.Application.Strategies
 {
     public class ForceSubtractFundsStrategy : IFundsStrategy
     {
-        public FundsOperations Operation => FundsOperations.ForceSubtract;
-
-        public void Execute(Wallet wallet, decimal amount) => wallet.ForceSubtractFunds(amount);
+        // Subtracts even if the result is a negative balance.
+        public void Execute(Wallet wallet, decimal amount) => wallet.ForceWithdraw(amount);
     }
 }

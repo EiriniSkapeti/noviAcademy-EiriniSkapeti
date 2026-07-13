@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using WorldRank.Domain.Entities;
+
+namespace WorldRank.Application
+{
+    public interface IPlayerService
+    {
+        Task<Player> CreateAsync(string name, int score, CancellationToken cancellationToken = default);
+        Task<Player?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<Player>> GetAllAsync(CancellationToken cancellationToken = default);
+    }
+}

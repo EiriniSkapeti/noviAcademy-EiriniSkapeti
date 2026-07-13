@@ -5,8 +5,8 @@ namespace WorldRank.Application.Strategies
 {
     public class SubtractFundsStrategy : IFundsStrategy
     {
-        public FundsOperations Operation => FundsOperations.Subtract;
-
+        // Throws InsufficientFundsException if the balance is too low.
         public void Execute(Wallet wallet, decimal amount) => wallet.Withdraw(amount);
     }
+
 }

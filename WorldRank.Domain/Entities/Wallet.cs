@@ -3,63 +3,54 @@ using WorldRank.Domain.Exceptions;
 
 namespace WorldRank.Domain.Entities;
 
-public class Wallet : IWallet
+public class Wallet
 {
-	public Currency Currency { get; }
-	public int PlayerId { get; }
-	public decimal Balance { get; private set; }
-	public bool IsBlocked { get; private set; }
+    public Guid Id { get; }
+    public Guid PlayerId { get; }
+    public Currency Currency { get; }
+    public decimal Balance { get; private set; }
+    public bool IsBlocked { get; private set; }
 
-	public Wallet(int playerId, Currency currency, decimal balance, bool isBlocked = false)
-	{
-		PlayerId = playerId;
-		if (balance < 0)
-			throw new InsufficientFundsException(balance);
+    public Wallet(Guid playerId, Currency currency)
+    {
+        Id = Guid.NewGuid();
+        PlayerId = playerId;
+        Currency = currency;
+    }
 
-		Balance = balance;
-		Currency = currency;
-		IsBlocked = isBlocked;
-	}
+    // Parameterless ctor used only by EF Core to materialise rows (properties set via backing fields).
+    private Wallet()
+    {
+    }
 
-	public void Block() => IsBlocked = true;
+    // Balance is encapsulated: it changes only through Deposit / Withdraw — never set from outside.
+    public void Deposit(decimal amount)
+    {
+        if (IsBlocked)
+            throw new WalletBlockedException(Id);
 
-	public void Unblock() => IsBlocked = false;
+        if (amount <= 0)
+            throw new InvalidAmountException(amount);
 
-	public void SetBalance(decimal balance)
-	{
-		if (balance < 0)
-			throw new InsufficientFundsException(balance);
+        Balance += amount;
+    }
 
-		Balance = balance;
-	}
+    public void Withdraw(decimal amount)
+    {
+        if (IsBlocked)
+            throw new WalletBlockedException(Id);
 
-	public void Deposit(decimal amount)
-	{
-		if (amount <= 0)
-			throw new InvalidAmountException(amount);
+        if (amount <= 0)
+            throw new InvalidAmountException(amount);
 
-		if (IsBlocked)
-			throw new WalletBlockedException(Currency);
+        if (amount > Balance)
+            throw new InsufficientFundsException(amount, Balance);
 
-		Balance += amount;
-	}
+        Balance -= amount;
+    }
 
-	public void Withdraw(decimal amount)
-	{
-		if (amount <= 0)
-			throw new InvalidAmountException(amount);
-
-		if (IsBlocked)
-			throw new WalletBlockedException(Currency);
-
-		var newBalance = Balance - amount;
-		if (newBalance < 0)
-			throw new InsufficientFundsException(newBalance);
-
-		Balance = newBalance;
-	}
-
-    public void ForceSubtractFunds(decimal amount)
+    // Subtracts even if the result is negative (used by ForceSubtractFundsStrategy).
+    public void ForceWithdraw(decimal amount)
     {
         if (amount <= 0)
             throw new InvalidAmountException(amount);
@@ -67,5 +58,9 @@ public class Wallet : IWallet
         Balance -= amount;
     }
 
-    public override string ToString() => $"Balance -> {Balance} Currency -> {Currency} IsBlocked -> {IsBlocked}";
+    public void Block() => IsBlocked = true;
+    public void Unblock() => IsBlocked = false;
+
+    public override string ToString() =>
+        $"[{Id}] {Currency} {Balance:0.00}{(IsBlocked ? " (blocked)" : string.Empty)}";
 }

@@ -1,6 +1,7 @@
-﻿using WorldRank.Domain.Entities;
+﻿using WorldRank.Application.Stretegies;
+using WorldRank.Domain.Entities;
 
-namespace WorldRank.Application.Stretegies
+namespace WorldRank.Application.Strategies
 {
     public class AddFundsStrategy : IFundsStrategy
     {

@@ -1,12 +1,17 @@
-namespace WorldRank.Domain.Exceptions;
+using System;
 
-public class InsufficientFundsException : WalletException
+namespace WorldRank.Domain.Exceptions
 {
-	public decimal AttemptedBalance { get; }
+    public class InsufficientFundsException : WalletException
+    {
+        public decimal Attempted { get; }
+        public decimal Balance { get; }
 
-	public InsufficientFundsException(decimal attemptedBalance)
-		: base($"Insufficient funds: wallet balance cannot be negative (attempted balance: {attemptedBalance}).")
-	{
-		AttemptedBalance = attemptedBalance;
-	}
+        public InsufficientFundsException(decimal attempted, decimal balance)
+            : base($"Insufficient funds: attempted {attempted}, balance {balance}.")
+        {
+            Attempted = attempted;
+            Balance = balance;
+        }
+    }
 }

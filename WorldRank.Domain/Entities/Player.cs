@@ -2,29 +2,35 @@ using WorldRank.Domain.Enums;
 using WorldRank.Domain.Entities;
 namespace WorldRank.Domain.Entities;
 
-public class Player : IPlayer
+public class Player
 {
-	public int Id { get; }
-	public string Name { get; private set; }
-	public int Score { get; private set; }
+    public Guid Id { get; }
+    public string Name { get; }
+    public int Score { get; private set; }
 
-	public Player(int id, string name)
-	{
-		if (string.IsNullOrWhiteSpace(name))
-			throw new ArgumentException("Name cannot be empty.", nameof(name));
+    public Player(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Name cannot be null or empty.", nameof(name));
 
-		Id = id;
-		Name = name;
-		Score = 0;
-	}
+        Id = Guid.NewGuid();
+        Name = name;
+    }
 
-	public void AddScore(int points)
-	{
-		if (points < 0)
-			throw new ArgumentOutOfRangeException(nameof(points), "Points cannot be negative.");
+    // Parameterless ctor used only by EF Core to materialise rows (properties set via backing fields).
+    private Player()
+    {
+        Name = string.Empty;
+    }
 
-		Score += points;
-	}
+    public void UpdateScore(int newScore)
+    {
+        if (newScore < 0)
+            throw new ArgumentOutOfRangeException(nameof(newScore), "Score cannot be negative.");
 
-	public override string ToString() => $"[{Id}] {Name} - Score: {Score}";
+        Score = newScore;
+    }
+
+    public override string ToString() =>
+        $"[{Id}] {Name} - Score: {Score}";
 }

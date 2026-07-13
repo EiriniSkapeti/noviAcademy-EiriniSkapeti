@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="WorldRank.API/WorldRank.API.csproj" Id="522e02be-c9a6-4728-8471-2ee5b2415a94" />
   <Project Path="WorldRank.Application/WorldRank.Application.csproj" Id="ce891509-b70d-4872-99e4-88dcda0fd9a2" />
   <Project Path="WorldRank.Domain/WorldRank.Domain.csproj" Id="e4415d8a-1a42-4f0d-910d-2e9930817972" />
   <Project Path="WorldRank.Infrastructure/WorldRank.Infrastructure.csproj" Id="9af5367a-cc6e-41e5-8192-585f5235f171" />
