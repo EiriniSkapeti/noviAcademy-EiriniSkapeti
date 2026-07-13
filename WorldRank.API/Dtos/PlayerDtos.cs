@@ -1,6 +1,6 @@
 using WorldRank;
 
-namespace WorldRank.Api;
+namespace WorldRank.API;
 
 // Request DTO — what the client sends to create a player.
 public record CreatePlayerRequest(string Name, int Score);
