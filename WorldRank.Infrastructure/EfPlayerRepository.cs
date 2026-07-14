@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using WorldRank.Domain.Entities;
 using WorldRank.Application;
+using WorldRank.Infrastructure.Persistence.Context;   // for WorldRankDBContext
 
 namespace WorldRank.Infrastructure;
 
 public class EfPlayerRepository : IPlayerRepository
 {
-    private readonly AppDbContext _db;
+    private readonly WorldRankDBContext _db;
 
-    public EfPlayerRepository(AppDbContext db) => _db = db;
+    public EfPlayerRepository(WorldRankDBContext db) => _db = db;
 
     public async Task AddAsync(Player player, CancellationToken cancellationToken = default)
     {
@@ -26,13 +27,13 @@ public class EfPlayerRepository : IPlayerRepository
     public async Task<IReadOnlyList<Player>> GetAllAsync(CancellationToken cancellationToken = default) =>
         await _db.Players.AsNoTracking().ToListAsync(cancellationToken);
 
-        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var existing = await _db.Players.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        if (existing is not null)
         {
-            var existing = await _db.Players.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
-            if (existing is not null)
-            {
-                _db.Players.Remove(existing);
-                await _db.SaveChangesAsync(cancellationToken);
-            }
+            _db.Players.Remove(existing);
+            await _db.SaveChangesAsync(cancellationToken);
         }
+    }
 }

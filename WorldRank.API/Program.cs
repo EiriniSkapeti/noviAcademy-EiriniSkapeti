@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using NLog.Extensions.Logging;
 using WorldRank.Application;
-
+using WorldRank.Infrastructure.Persistence.Context;
 
 //using WorldRank.Application.Services;
 using WorldRank.Application.Strategies;
@@ -19,8 +19,8 @@ builder.Logging.ClearProviders();
 builder.Logging.AddNLog("nlog.config");
 
 // One AppDbContext per request (scoped) — the EF Core repositories depend on it.
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(DbConnection.ConnectionString));
+builder.Services.AddDbContext<WorldRankDBContext>(options =>
+    options.UseSqlServer("Server=localhost;Database=WorldRank;Integrated Security=true;TrustServerCertificate=true"));
 
 builder.Services.AddScoped<IPlayerRepository, EfPlayerRepository>();
 builder.Services.AddScoped<IWalletRepository, EfWalletRepository>();

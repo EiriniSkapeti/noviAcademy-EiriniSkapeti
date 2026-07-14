@@ -3,7 +3,7 @@ using WorldRank.Domain.Entities;
 
 namespace WorldRank.Infrastructure.Persistence.Context
 {
-    internal class WorldRankDBContext : DbContext
+    public class WorldRankDBContext : DbContext
     {
         public DbSet<Player> Players { get; set; }
         public DbSet<Wallet> Wallets { get; set; }

@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using WorldRank.Domain.Entities;
 using WorldRank.Application;
+using WorldRank.Infrastructure.Persistence.Context;
 
 namespace WorldRank.Infrastructure;
 
 public class EfWalletRepository : IWalletRepository
 {
-    private readonly AppDbContext _db;
+    private readonly WorldRankDBContext _db;
 
-    public EfWalletRepository(AppDbContext db) => _db = db;
+    public EfWalletRepository(WorldRankDBContext db) => _db = db;
 
     public async Task AddAsync(Wallet wallet, CancellationToken cancellationToken = default)
     {
