@@ -1,9 +1,9 @@
-﻿using WorldRank.Domain.Entities;
+using WorldRank.Domain.Entities;
+namespace WorldRank;
 
-namespace WorldRank.Application.Stretegies
+// Strategy pattern: a family of fund operations behind one interface.
+// The caller picks a behaviour by passing the right implementation — no if/switch.
+public interface IFundsStrategy
 {
-    public interface IFundsStrategy
-    {
-        void Execute(Wallet wallet, decimal amount);
-    }
+    void Execute(Wallet wallet, decimal amount);
 }

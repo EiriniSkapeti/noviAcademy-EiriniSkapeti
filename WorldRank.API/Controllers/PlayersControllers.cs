@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using WorldRank.Application;
 //using WorldRank.Application;
 using WorldRank.Domain.Entities;
+using WorldRank.Api;
 
-namespace WorldRank.API.Controllers
+namespace WorldRank.Api.Controllers
 {
     [ApiController]
     [Route("players")]

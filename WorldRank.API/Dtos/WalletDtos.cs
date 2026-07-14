@@ -1,6 +1,6 @@
-using WorldRank;
+using WorldRank.Domain.Entities;
 
-namespace WorldRank.API;
+namespace WorldRank.Api;
 
 // Request DTOs — the shape the client sends. Kept separate from the domain entity.
 public record CreateWalletRequest(Guid PlayerId, Currency Currency);

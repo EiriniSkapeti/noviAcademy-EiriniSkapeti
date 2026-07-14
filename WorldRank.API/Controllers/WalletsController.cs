@@ -2,7 +2,7 @@
 using WorldRank.Application;
 using WorldRank.Domain.Exceptions;
 
-namespace WorldRank.API.Controllers
+namespace WorldRank.Api.Controllers
 {
     [ApiController]
     [Route("wallets")]

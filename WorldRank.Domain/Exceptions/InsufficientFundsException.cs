@@ -1,17 +1,16 @@
-using System;
+using WorldRank.Domain.Exceptions;
+namespace WorldRank;
 
-namespace WorldRank.Domain.Exceptions
+public class InsufficientFundsException : WalletException
 {
-    public class InsufficientFundsException : WalletException
-    {
-        public decimal Attempted { get; }
-        public decimal Balance { get; }
+    public decimal Requested { get; }
+    public decimal Available { get; }
+    public decimal Shortfall => Requested - Available;
 
-        public InsufficientFundsException(decimal attempted, decimal balance)
-            : base($"Insufficient funds: attempted {attempted}, balance {balance}.")
-        {
-            Attempted = attempted;
-            Balance = balance;
-        }
+    public InsufficientFundsException(decimal requested, decimal available)
+        : base($"Insufficient funds: requested {requested:0.00}, available {available:0.00}, short by {requested - available:0.00}.")
+    {
+        Requested = requested;
+        Available = available;
     }
 }

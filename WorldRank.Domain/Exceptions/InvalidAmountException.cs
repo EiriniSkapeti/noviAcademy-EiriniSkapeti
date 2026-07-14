@@ -1,13 +1,13 @@
-namespace WorldRank.Domain.Exceptions
-{
-	public class InvalidAmountException : WalletException
-	{
-		public decimal Amount { get; }
+using WorldRank.Domain.Exceptions;
+namespace WorldRank;
 
-		public InvalidAmountException(decimal amount)
-			: base($"The amount must be greater than zero (provided: {amount}).")
-		{
-			Amount = amount;
-		}
-	}
+public class InvalidAmountException : WalletException
+{
+    public decimal Amount { get; }
+
+    public InvalidAmountException(decimal amount)
+        : base($"Amount must be positive. Provided: {amount:0.00}.")
+    {
+        Amount = amount;
+    }
 }

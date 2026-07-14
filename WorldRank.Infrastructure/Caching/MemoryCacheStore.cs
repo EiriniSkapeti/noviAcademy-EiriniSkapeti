@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 
-namespace WorldRank;
+namespace WorldRank.Infrastructure.Caching;
 
 // In-memory implementation of the Application's ICache port, backed by IMemoryCache.
 // This is where the caching *technology* lives (Infrastructure), not in the Application.

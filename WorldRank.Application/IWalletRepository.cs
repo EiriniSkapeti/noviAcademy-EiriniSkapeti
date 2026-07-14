@@ -1,17 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using WorldRank.Domain.Entities;
 
 namespace WorldRank.Application
 {
-	public interface IWalletRepository
-	{
-		Task AddAsync(Wallet wallet, CancellationToken cancellationToken = default);
+    public interface IWalletRepository
+    {
+        Task AddAsync(Wallet wallet, CancellationToken cancellationToken = default);
+        Task<Wallet?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<Wallet>> GetByPlayerAsync(Guid playerId, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<Wallet>> GetAllAsync(CancellationToken cancellationToken = default);
 
-		Task<Wallet?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-
-		Task<IReadOnlyList<Wallet>> GetByPlayerAsync(Guid playerId, CancellationToken cancellationToken = default);
-
-		Task<IReadOnlyList<Wallet>> GetAllAsync(CancellationToken cancellationToken = default);
-
-		Task SaveChangesAsync(CancellationToken cancellationToken = default);
-	}
+        // Persist changes tracked on entities fetched via GetByIdAsync (e.g. after a deposit).
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
+    }
 }

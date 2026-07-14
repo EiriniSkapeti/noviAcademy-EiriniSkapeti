@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 //using WorldRank.Infrastructure;
 
-namespace WorldRank.Application;
+namespace WorldRank;
 
 public static class DependencyInjection
 {

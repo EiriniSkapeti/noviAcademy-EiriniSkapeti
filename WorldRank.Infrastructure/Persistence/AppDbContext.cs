@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-
+using WorldRank.Domain.Entities;
 namespace WorldRank;
 
 public class AppDbContext : DbContext
