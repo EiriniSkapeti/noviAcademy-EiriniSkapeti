@@ -10,7 +10,9 @@ using WorldRank.Infrastructure.Persistence.Context;
 using WorldRank.Application.Strategies;
 using WorldRank.Infrastructure;
 
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory();
 
+builder.Host.ConfigureContainer()
 
 var builder = WebApplication.CreateBuilder(args);
 
